@@ -37,8 +37,9 @@ jobs:
       - name: Build APK
         run: |
           cd android
+          # تعديل رابط التحميل لإصدار 8.13 يدوياً لضمان التوافق
+          sed -i 's/gradle-.*-bin.zip/gradle-8.13-bin.zip/g' gradle/wrapper/gradle-wrapper.properties
           chmod +x gradlew
-          ./gradlew wrapper --gradle-version 8.13
           ./gradlew assembleDebug
 
       - name: Upload APK
