@@ -1,0 +1,7 @@
+{
+  "name": "WinTech Price Checker",
+  "description": "A kiosk application for checking product prices via barcode scanner, featuring promotional video loops and customizable settings.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
