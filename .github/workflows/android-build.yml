@@ -19,13 +19,16 @@ jobs:
       - name: Build Web Project
         run: npm run build
 
-      - name: Initialize Capacitor Android
+      - name: Initialize & Sync Capacitor
         run: |
           npm install @capacitor/core @capacitor/cli @capacitor/android
+          # إنشاء مجلد أندرويد إذا لم يكن موجوداً
           if [ ! -d "android" ]; then
             npx cap init WinTech com.wintech.app --web-dir dist
             npx cap add android
           fi
+          # هذه الخطوة تحل مشكلة "Could not read script" التي ظهرت لك
+          npx cap sync android
           npx cap copy
 
       - name: Set up JDK 17
@@ -37,10 +40,11 @@ jobs:
       - name: Build APK
         run: |
           cd android
-          # تعديل رابط التحميل لإصدار 8.13 يدوياً لضمان التوافق
+          # تحديث إصدار Gradle يدوياً لضمان التوافق مع Plugins
           sed -i 's/gradle-.*-bin.zip/gradle-8.13-bin.zip/g' gradle/wrapper/gradle-wrapper.properties
           chmod +x gradlew
-          ./gradlew assembleDebug
+          # تنظيف وبناء التطبيق
+          ./gradlew clean assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
